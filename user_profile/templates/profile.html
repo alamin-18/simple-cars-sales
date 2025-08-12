@@ -10,4 +10,30 @@
         <h2>Email: {{request.user.email}}</h2>
     </div>
 </section>
+<section class="p-8">
+    <br><br>
+    <h1 class="text-4xl font-bold text-center">Your Total Purchases  <span class="text-emerald-500 border-2 px-4">{{purchases |  length }}</span></h1>
+    <br>
+    <div class="grid md:grid-cols-3 sm:grid-cols-1"> 
+
+        {% for p in purchases %}
+        <div class="card bg-base-100 w-96 shadow-lg">
+            <figure>
+                <img src="{{p.product.image.url}}" alt="Shoes" />
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">{{p.product.model_name}}</h2>
+                <p>Price: $ {{p.product.price}}</p>
+                <p>Band: {{p.product.band}}</p>
+                <div class="card-actions justify-end">
+                    
+                    <a href="{% url 'details' p.product.id %}" class="btn btn-outline btn-info">Viwe Details</a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</section>
 {% endblock %}

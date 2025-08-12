@@ -1,8 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from . import forms
 from django.contrib import messages
 from django.contrib.auth import login,logout,authenticate,update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm
+from cars.models import Cars
+from .models import Purchase
+from django.db.models import F
 
 # Create your views here.
 
@@ -19,7 +22,10 @@ def registers(request):
     return render(request, 'register.html',{'form':form})
 
 def profile(request):
-    return render(request,'profile.html')
+    user = request.user 
+    purchases = Purchase.objects.filter(user=user).select_related('product')
+    
+    return render(request,'profile.html',{'purchases':purchases})
 
 def user_login(request):
     if request.method == 'POST':
@@ -57,3 +63,17 @@ def profile_change(request):
         
     return render(request,'changesPass.html',{'form':form})
                 
+def buy_now(request,id):
+    product = get_object_or_404(Cars,id=id)
+    
+    if product.quantity<=0:
+        messages(request,"Out of stock")
+        return redirect("home")
+    updated = Cars.objects.filter(id=id,quantity__gte=1).update(quantity=F('quantity')-1)
+    if updated:
+        Purchase.objects.create(user=request.user, product=product, quantity=1)
+        return redirect('profile')
+    else:
+        messages(request,"Out of stock")
+        return redirect("home")
+        
