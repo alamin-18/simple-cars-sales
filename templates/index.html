@@ -21,7 +21,7 @@
     <div class="text-center">
         <h2 class="text-6xl mb-2">Bands</h2>
         {% for b in bands %}
-        <button class="btn btn-dash btn-success">{{b}}</button>
+        <a href="{% url 'bands_wise' b.slug %}" class="btn btn-dash btn-success">{{b}}</a>
         {% endfor %}
     </div>
     <br>
