@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section>
+    <div class="hero bg-base-200 min-h-screen">
+        <div class="hero-content flex-col lg:flex-row-reverse">
+            <img src="https://www.reliancegeneral.co.in/siteassets/rgiclassets/images/blogs-images/top-5-fastest-cars-in-the-world2.webp"
+                class="max-w-sm rounded-lg shadow-2xl" />
+            <div>
+                <h1 class="text-5xl font-bold">Band New Car!</h1>
+                <p class="py-6">
+                    Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
+                    quasi. In deleniti eaque aut repudiandae et a id nisi.
+                </p>
+                <button class="btn btn-primary">Get Started</button>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="w-11/12 mx-auto">
+    <div class="text-center">
+        <h2 class="text-6xl mb-2">Bands</h2>
+        {% for b in bands %}
+        <button class="btn btn-dash btn-success">{{b}}</button>
+        {% endfor %}
+    </div>
+    <br>
+   
+    <div>
+        <h2 class="text-3xl font-bold">Total Found:  <span class="text-emerald-500 border-2 px-4">{{cars |  length }}</span></h2>
+    </div>
+    <div class="mt-10 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-4 ">
+        {% for c in cars %}
+        <div class="card bg-base-100 w-96 shadow-lg">
+            <figure>
+                <img src="{{c.image.url}}" alt="Shoes" />
+            </figure>
+            <div class="card-body">
+                <h2 class="card-title">{{c.model_name}}</h2>
+                <p>Price: $ {{c.price}}</p>
+                <p>Band: {{c.band}}</p>
+                <div class="card-actions justify-end">
+                    
+                    <a href="{% url 'details' c.id %}" class="btn btn-outline btn-info">Viwe Details</a>
+                    
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

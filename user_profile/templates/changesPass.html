@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<section class="max-w-6/12 mx-auto">
+    <h1 class="text-center">Change Your Profile Informations</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form | crispy}}
+        <button class="btn btn-soft btn-success">Submit</button>
+    </form>
+</section>
+{% endblock %}
