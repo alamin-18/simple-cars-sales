@@ -5,6 +5,7 @@ from django.contrib.auth import login,logout,authenticate,update_session_auth_ha
 from django.contrib.auth.forms import AuthenticationForm
 from cars.models import Cars
 from .models import Purchase
+from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
 # Create your views here.
@@ -20,7 +21,7 @@ def registers(request):
     else:
         form = forms.singUpForm()
     return render(request, 'register.html',{'form':form})
-
+@login_required
 def profile(request):
     user = request.user 
     purchases = Purchase.objects.filter(user=user).select_related('product')
@@ -44,12 +45,12 @@ def user_login(request):
     else:
         form = AuthenticationForm()
     return render(request,'login.html',{"form":form})
-
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('home')
 
-
+@login_required
 def profile_change(request):
     if request.method == 'POST':
         form = forms.ChangeProfile(request.POST, instance=request.user)   
@@ -62,7 +63,7 @@ def profile_change(request):
         form =forms.ChangeProfile(instance=request.user)
         
     return render(request,'changesPass.html',{'form':form})
-                
+@login_required                
 def buy_now(request,id):
     product = get_object_or_404(Cars,id=id)
     
